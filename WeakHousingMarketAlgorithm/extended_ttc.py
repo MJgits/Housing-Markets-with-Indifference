@@ -260,8 +260,3 @@ class HousingMarket():
             
         if self.verbose:
             verbose_print_exchanged_objects(self.object_by_agent_index)
-
-            
-            
-
-
