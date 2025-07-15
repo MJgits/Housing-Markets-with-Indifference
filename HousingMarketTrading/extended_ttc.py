@@ -1,6 +1,7 @@
-from typing import List, Set
-from utils import MarketPreferences, IndifferenceClass, Allocation
-from verbose_prints import * 
+from typing import List, Set 
+from .utils import MarketPreferences, IndifferenceClass, Allocation
+from .verbose_prints import * 
+
 
 
 class HousingMarket():
@@ -23,7 +24,7 @@ class HousingMarket():
         self.verbose = verbose
 
     # Performs partitioning as per Xiong 2021
-    def partition(self, remaining_agents: Set[int]) -> None:
+    def __partition(self, remaining_agents: Set[int]) -> None:
         
         # each index will be the rank of agents. 
         # So i = 0 are unsatisfied agents, i=1 are satisfied agents who have a preference in i = 0 houses aka objects_in_S_subsets[i]
@@ -44,7 +45,7 @@ class HousingMarket():
 
 
             # satisfied if owned object is in the set of its top available items
-            if self.object_by_agent_index[agent] in self.top_available(agent):
+            if self.object_by_agent_index[agent] in self.__top_available(agent):
                 remaining.add(agent)
             
             # unsatisfied otherwise
@@ -75,7 +76,7 @@ class HousingMarket():
             for agent in remaining:
 
                 # we are checking if any of the agents top available objects exist in the previous ranks owned objects
-                top_pref_in_prev_rank = self.top_available(agent).intersection(self.objects_in_S_subsets[rank-1])
+                top_pref_in_prev_rank = self.__top_available(agent).intersection(self.objects_in_S_subsets[rank-1])
                 
                 # add agent and object to subset and objects in subset
                 if top_pref_in_prev_rank:
@@ -106,7 +107,7 @@ class HousingMarket():
             
 
     #  this method takes an agent id and produces an indifference class. I.e. a set of available objects that are preferenced equally and greater than any other available objects
-    def top_available(self, agent: int) -> IndifferenceClass:
+    def __top_available(self, agent: int) -> IndifferenceClass:
 
         top_objects:IndifferenceClass = set()
  
@@ -122,7 +123,7 @@ class HousingMarket():
         return top_objects
 
     # this method performs the bulk of the allocation, forming the graph and allocating and exchanging objects 
-    def execute(self) -> Allocation:
+    def execute_extended_ttc(self) -> Allocation:
         
         iteration = 1
         remaining_agents = set([i for i in range(self.num_agents)])
@@ -133,7 +134,7 @@ class HousingMarket():
                 print()
             # Here we create the S partitions, S[0] are unsatisfied and S[-1] is S*
             # This resets the subsets every iteration
-            self.partition(remaining_agents)
+            self.__partition(remaining_agents)
   
             # These are the terminal sinks I believe
             if self.S_star:
@@ -173,7 +174,7 @@ class HousingMarket():
                     for subset_k_objects in self.objects_in_S_subsets:
                         
                         # checking if unsatisfied agent has any overlap with objects owned by agents in subset k
-                        preferred_objects = self.top_available(unsatisfied_agent).intersection(subset_k_objects)
+                        preferred_objects = self.__top_available(unsatisfied_agent).intersection(subset_k_objects)
 
                         # assign out edge and break out of subset sk
                         # TODO not sure about this being a valid use of the priority ordering
@@ -184,7 +185,7 @@ class HousingMarket():
                 # for each satisfied agent i.e. in subsets[1:], point to the highest priority in objects owned by agents in k-1
                 for k in range(1,len(self.objects_in_S_subsets)):
                     for agent in self.S_subsets[k]:
-                        preferred_objects = self.top_available(agent).intersection(self.objects_in_S_subsets[k-1])
+                        preferred_objects = self.__top_available(agent).intersection(self.objects_in_S_subsets[k-1])
                         # TODO not sure about this being a valid use of the priority ordering
                         out_edges_agent_to_object[agent] = min(preferred_objects)
 
@@ -193,7 +194,7 @@ class HousingMarket():
                     verbose_print_out_edges(out_edges_agent_to_object, self.agent_by_object_index)
                     
                 # This finds cycles and modifies self.objects_by_agent and agent_by_object to reflect exchanged (but not yet allocated) objects
-                self.identify_cycles_exchange_objects(out_edges_agent_to_object)
+                self.__identify_cycles_exchange_objects(out_edges_agent_to_object)
             
             iteration+=1
 
@@ -202,7 +203,7 @@ class HousingMarket():
 
         return self.allocation
                 
-    def identify_cycles_exchange_objects(self, graph_agentIdx_to_object:List[int]) -> None:
+    def __identify_cycles_exchange_objects(self, graph_agentIdx_to_object:List[int]) -> None:
 
         # start with a used_in_cycle array thats true for any agent who has been taken out of the system 
         used_in_cycle = [graph_agentIdx_to_object[i] < 0 for i in range(self.num_agents)]

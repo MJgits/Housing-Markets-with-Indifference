@@ -1,5 +1,5 @@
-from typing import Dict, List, Set
-from utils import Allocation
+from typing import List, Set
+from .utils import Allocation
 
 def verbose_print_subsets(S_star, S_subsets):
     print('_______Partitioning_______')

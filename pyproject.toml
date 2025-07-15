@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "HousingMarketTrading"
+version = "0.1.0"
+description = "A Python library for executing top trading cycles on weak preference markets"
+authors = [
+  { name="Marcus Johnson"}
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/MJgits/Housing-Markets-with-Indifference"

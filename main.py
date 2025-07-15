@@ -1,6 +1,7 @@
-from extended_ttc import HousingMarket
+from HousingMarketTrading import HousingMarket
 
-from utils import *
+from HousingMarketTrading.utils import MarketPreferences
+
 
 '''
 Two example markets are presented below from Xiong 2021. This shows example usage.
@@ -20,7 +21,7 @@ if __name__ == "__main__":
 
 
     xiong_market_fig2 = HousingMarket(6, xiong_preferences_fig2)
-    fig2_allocation = xiong_market_fig2.execute()
+    fig2_allocation = xiong_market_fig2.execute_extended_ttc()
     print(f"fig 2 allocation return: {fig2_allocation}")
     
 
@@ -39,7 +40,7 @@ if __name__ == "__main__":
         [{4,8,10},  {0,1,2,3,  5,6,7,  9   }]]
 
     xiong_market_table_2 = HousingMarket(11, xiong_preferences_table_2, verbose=True)
-    xiong_market_table_2.execute()
+    xiong_market_table_2.execute_extended_ttc()
 
 
     
