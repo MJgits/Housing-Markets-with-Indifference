@@ -17,7 +17,7 @@ Users can observe the algorithm as its executing with an optional verbose settin
 your_market = HousingMarket(n_agents = 3, market_preferences = your_market_preferences, verbose = True)
 
 Finally the extended TTC algorithm is executed upon running the execute method:
-your_market.exectute_extended_ttc() which returns an Allocation:Dict[agent (int), object (int)] representing the final allocation of each agent.
+your_market.execute_extended_ttc() which returns an Allocation:Dict[agent (int), object (int)] representing the final allocation of each agent.
 
 ## Acknowledgements
 This implementation is based on work by Xinsheng Xiong, Xianjia Wang & Kun He in 'A new allocation rule for the housing market problem with ties' found at: https://doi.org/10.1007/s10878-021-00727-z.
