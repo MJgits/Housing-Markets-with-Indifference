@@ -1,12 +1,12 @@
 ## Usage
 Use the following commands to set up the repo:
-
+```bash
   git clone https://github.com/MJgits/Housing-Markets-with-Indifference.git
   
   cd Housing-Markets-with-Indifference
   
   pip install -e .
-  
+```
 Run the main file to execute the algorithm with some examples. Preferences have to be complete and inputted as per the examples.
 
 ## Description
