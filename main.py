@@ -1,15 +1,13 @@
-
-from WeakHousingMarketAlgorithm import (MarketPreferences,
-                                        Allocation,# MarketPreferences is type definition to help with input structure
-                                        HousingMarket) # HousingMarket handles the algorithm
-
-# Helps with input structure
-from WeakHousingMarketAlgorithm import MarketPreferences 
-
+from WeakHousingMarketAlgorithm import (
+    MarketPreferences,
+    HousingMarket
+    
+)
 
 
 '''
 Two example markets are presented below from Xiong 2021. This shows example usage.
+
 '''
 
 
@@ -25,7 +23,7 @@ if __name__ == "__main__":
 
 
     xiong_market_fig2 = HousingMarket(6, xiong_preferences_fig2)
-    fig2_allocation: Allocation = xiong_market_fig2.execute_extended_ttc()
+    fig2_allocation = xiong_market_fig2.execute_extended_ttc()
     print(f"fig 2 allocation return: {fig2_allocation}")
     
 
@@ -45,5 +43,6 @@ if __name__ == "__main__":
 
     xiong_market_table_2 = HousingMarket(11, xiong_preferences_table_2, verbose=True)
     xiong_market_table_2.execute_extended_ttc()
+
 
     
