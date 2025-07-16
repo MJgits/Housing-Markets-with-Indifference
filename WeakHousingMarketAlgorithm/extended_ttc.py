@@ -6,7 +6,7 @@ from .verbose_prints import *
 
 class HousingMarket():
     # Housing markets initialised with a number of agents, and a Market preferences structure
-    def __init__(self, n_agents, market_preferences: MarketPreferences, verbose: bool = False) -> None:
+    def __init__(self, n_agents, market_preferences: MarketPreferences) -> None:
         self.num_agents = n_agents
         self.market_preferences = market_preferences
         
@@ -20,8 +20,6 @@ class HousingMarket():
         # this is the allocation that gets returned back from execute()
         self.allocation: Allocation = dict()
 
-        # this controls whether to print out algorithm steps
-        self.verbose = verbose
 
     # Performs partitioning as per Xiong 2021
     def __partition(self, remaining_agents: Set[int]) -> None:
@@ -123,8 +121,8 @@ class HousingMarket():
         return top_objects
 
     # this method performs the bulk of the allocation, forming the graph and allocating and exchanging objects 
-    def execute_extended_ttc(self) -> Allocation:
-        
+    def execute_extended_ttc(self, verbose: bool = False) -> Allocation:
+        self.verbose = verbose
         iteration = 1
         remaining_agents = set([i for i in range(self.num_agents)])
         
