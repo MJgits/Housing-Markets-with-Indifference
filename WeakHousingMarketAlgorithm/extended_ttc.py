@@ -29,18 +29,18 @@ class HousingMarket():
         self.S_subsets = []
         self.objects_in_S_subsets = []
         
-        # we empty S star because when partition is called, it wont necessarily reset S_star since all remaining items could be partitioned in S without S*
+        # distinct subset of terminal agents
         self.S_star = set()
         
-        # subset will get appended to S_subsets
+        # 'subset' and 'owned_objects' will get appended to S_subsets at the end of each subset iteration
         subset = set()
         owned_objects = set()
+        
         # remaining gets used to further subset the satisfied agents
         remaining = set()
  
         # get satisfied agents
         for agent in remaining_agents:
-
 
             # satisfied if owned object is in the set of its top available items
             if self.object_by_agent_index[agent] in self.__top_available(agent):
@@ -52,9 +52,8 @@ class HousingMarket():
                 # this constructs the set of items owned by the unsatisfied agents
                 owned_objects.add(self.object_by_agent_index[agent])
         
-        # here we add the first subset (unsatisfied agents) 
+        # here we add the first subset (unsatisfied agents) along with their owned objects
         self.S_subsets.append(subset)
-        # and then create a set of
         self.objects_in_S_subsets.append(owned_objects)
 
 
@@ -232,6 +231,7 @@ class HousingMarket():
                         # identify cycle do stuff
                         
                         start_cycle_index = current_path.index(next_agent)
+                        
                         if self.verbose:
                             cycle_path = current_path[start_cycle_index:][:]
                             cycle_path.append(next_agent)

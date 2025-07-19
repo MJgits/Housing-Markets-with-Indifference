@@ -42,17 +42,35 @@ if __name__ == "__main__":
         [{4,8,10},  {0,1,2,3,  5,6,7,  9   }]]
 
     xiong_market_table_2 = HousingMarket(11, xiong_preferences_table_2)
-    xiong_market_table_2.execute_extended_ttc(verbose=True)
+    # xiong_market_table_2.execute_extended_ttc(verbose=True)
 
 
-    
+    # Agent 5 loses its object and then receives it back. Hoping this gave room for strict NB behaviour from this agent but it doesnt
     nb_test_preferences: MarketPreferences = [
-        [{0,1},{2,3}],
-        [{1,2},{0,3}],
-        [{0,3},{1,2}],
-        [{1}, {0,2,3}]
+        [{0,1},{2,3,4,5,6}],
+        [{2},{6},{0,1,3,4,5}],
+        [{2,3},{0,1,4,5,6}],
+        [{2},{0,1,3,4,5,6}],
+        [{0,4,5},{1,2,3,6}],
+        [{4,5,6},{0,1,2,3}],
+        [{4},{0,1,2,3,5,6}]
+
     ]
 
-    nb_housing_market = HousingMarket(4, nb_test_preferences)
-
+    nb_housing_market = HousingMarket(7, nb_test_preferences)
     nb_housing_market.execute_extended_ttc(verbose=True)
+
+
+    nb_misreport_5: MarketPreferences = [
+        [{0,1},{2,3,4,5,6}],
+        [{2},{6},{0,1,3,4,5}],
+        [{2,3},{0,1,4,5,6}],
+        [{2},{0,1,3,4,5,6}],
+        [{0,4,5},{1,2,3,6}],
+        [{4,5,6},{0,1,2,3}],
+        [{4},{0,1,2,3,5,6}]
+
+    ]
+
+    nb_5_misreport = HousingMarket(7, nb_misreport_5)
+    nb_5_misreport.execute_extended_ttc(verbose=True)
