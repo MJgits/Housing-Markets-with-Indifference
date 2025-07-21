@@ -45,14 +45,14 @@ if __name__ == "__main__":
     # xiong_market_table_2.execute_extended_ttc(verbose=True)
 
 
-    # Agent 5 loses its object and then receives it back. Hoping this gave room for strict NB behaviour from this agent but it doesnt
+    # Agent 5 loses its object and then receives it back. Allocation is unchanged even when we force agent 5 to only prefer object 5
     nb_test_preferences: MarketPreferences = [
         [{0,1},{2,3,4,5,6}],
         [{2},{6},{0,1,3,4,5}],
         [{2,3},{0,1,4,5,6}],
         [{2},{0,1,3,4,5,6}],
         [{0,4,5},{1,2,3,6}],
-        [{4,5,6},{0,1,2,3}],
+        [{5,6},{0,1,2,3,4}],
         [{4},{0,1,2,3,5,6}]
 
     ]
@@ -60,14 +60,14 @@ if __name__ == "__main__":
     nb_housing_market = HousingMarket(7, nb_test_preferences)
     nb_housing_market.execute_extended_ttc(verbose=True)
 
-
+    # agent 5 only prefers its own object now but has no change in final allocation.
     nb_misreport_5: MarketPreferences = [
         [{0,1},{2,3,4,5,6}],
         [{2},{6},{0,1,3,4,5}],
         [{2,3},{0,1,4,5,6}],
         [{2},{0,1,3,4,5,6}],
         [{0,4,5},{1,2,3,6}],
-        [{4,5,6},{0,1,2,3}],
+        [{5},{0,1,2,3,4,6}],
         [{4},{0,1,2,3,5,6}]
 
     ]
