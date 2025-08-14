@@ -106,7 +106,7 @@ class HousingMarket():
     #  this method takes an agent id and produces an indifference class. I.e. a set of available objects that are preferenced equally and greater than any other available objects
     def __top_available(self, agent: int) -> IndifferenceClass:
 
-        top_objects:IndifferenceClass = set()
+        top_objects: IndifferenceClass = set()
  
         for indiff_class in self.market_preferences[agent]:
             for obj in indiff_class:
@@ -167,24 +167,26 @@ class HousingMarket():
                 # for each unsatisfied agent, point to the agent in the smallest possible k
                 for unsatisfied_agent in self.S_subsets[0]:
 
-                    # checking from lowest k subset to highest, including unsatisfied agents?
+                    # checking from lowest k subset to highest, including unsatisfied agents? TODO this technically still to be clarified by the authors
                     for subset_k_objects in self.objects_in_S_subsets:
                         
                         # checking if unsatisfied agent has any overlap with objects owned by agents in subset k
                         preferred_objects = self.__top_available(unsatisfied_agent).intersection(subset_k_objects)
 
                         # assign out edge and break out of subset sk
-                        # TODO not sure about this being a valid use of the priority ordering
                         if preferred_objects:
-                            out_edges_agent_to_object[unsatisfied_agent] = min(preferred_objects)
+
+                            # assigning highest priority object to the out edge of the agent
+                            out_edges_agent_to_object[unsatisfied_agent] = self.__priority_object_from_top_prefs(preferred_objects)
                             break
                 
                 # for each satisfied agent i.e. in subsets[1:], point to the highest priority in objects owned by agents in k-1
                 for k in range(1,len(self.objects_in_S_subsets)):
                     for agent in self.S_subsets[k]:
                         preferred_objects = self.__top_available(agent).intersection(self.objects_in_S_subsets[k-1])
-                        # TODO not sure about this being a valid use of the priority ordering
-                        out_edges_agent_to_object[agent] = min(preferred_objects)
+                        
+                        # assigning highest priority object to the out edge of the agent
+                        out_edges_agent_to_object[agent] = self.__priority_object_from_top_prefs(preferred_objects)
 
 
                 if self.verbose:   
@@ -258,3 +260,15 @@ class HousingMarket():
             
         if self.verbose:
             verbose_print_exchanged_objects(self.object_by_agent_index)
+
+
+    # method helps to break ties using global priority order
+    def __priority_object_from_top_prefs(self, preferred_objects: set[int]) -> int:
+        # this ensures we select highest priority by getting highest priority agent holding a preferred object
+        
+        priority_owner_of_preferred_objects = min({self.agent_by_object_index[i] for i in preferred_objects})
+
+        # then finding the highest priority agent's object
+        priority_preferred_object = self.object_by_agent_index[priority_owner_of_preferred_objects]
+
+        return priority_preferred_object
