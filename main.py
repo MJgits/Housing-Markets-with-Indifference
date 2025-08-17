@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
 
     xiong_market_fig2 = HousingMarket(6, xiong_preferences_fig2)
-    fig2_allocation = xiong_market_fig2.execute_extended_ttc()
+    # fig2_allocation = xiong_market_fig2.execute_extended_ttc(verbose=True)
     # print(f"fig 2 allocation return: {fig2_allocation}")
     
 
@@ -54,11 +54,10 @@ if __name__ == "__main__":
         [{0,4,5},{1,2,3,6}],
         [{5,6},{0,1,2,3,4}],
         [{4},{0,1,2,3,5,6}]
-
     ]
 
     nb_housing_market = HousingMarket(7, nb_test_preferences)
-    nb_housing_market.execute_extended_ttc(verbose=True)
+    # nb_housing_market.execute_extended_ttc(verbose=True)
 
     # agent 5 only prefers its own object now but has no change in final allocation.
     nb_misreport_5: MarketPreferences = [
@@ -73,4 +72,25 @@ if __name__ == "__main__":
     ]
 
     nb_5_misreport = HousingMarket(7, nb_misreport_5)
-    nb_5_misreport.execute_extended_ttc(verbose=True)
+    # nb_5_misreport.execute_extended_ttc(verbose=True)
+
+
+    saban_sp_market: MarketPreferences = [
+        [{2,4},{0,1,3}],
+        [{0}, {4}, {1,2,3}],
+        [{0},{1,2,3,4}],
+        [{1,2},{0,3,4}],
+        [{3},{0,1,2,4}]
+    ]
+
+    saban_agent_2_misreport: MarketPreferences = [
+        [{2,4},{0,1,3}],
+
+        [{3}, {0,1,2,4}],
+        [{0},{1,2,3,4}],
+        [{1,2},{0,3,4}],
+        [{3},{0,1,2,4}]
+    ]
+
+    saban_market = HousingMarket(5, saban_sp_market).execute_extended_ttc(verbose=True)
+    saban_misreport_market = HousingMarket(5, saban_agent_2_misreport).execute_extended_ttc(verbose= True)
