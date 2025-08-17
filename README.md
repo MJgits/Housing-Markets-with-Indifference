@@ -17,7 +17,7 @@ A housing market is initialised with all preferences represented as a list of ag
 your_market_preferences = [
 [{1,2},{0}],
 [{2},{1},{0}],
-[{1},{0,2}],
+[{1},{0,2}]
 ]
 
 your_market = HousingMarket(n_agents = 3, market_preferences = your_market_preferences)
