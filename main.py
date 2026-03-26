@@ -22,7 +22,7 @@ if __name__ == "__main__":
                                 [{4},           {0,1,2,3,5}]]
 
 
-    xiong_market_fig2 = HousingMarket(6, xiong_preferences_fig2)
+    xiong_market_fig2 = HousingMarket(xiong_preferences_fig2)
     # fig2_allocation = xiong_market_fig2.execute_extended_ttc(verbose=True)
     # print(f"fig 2 allocation return: {fig2_allocation}")
     
@@ -41,7 +41,7 @@ if __name__ == "__main__":
         [{0,1,9},   {    2,3,4,5,6,7,8,  10}],
         [{4,8,10},  {0,1,2,3,  5,6,7,  9   }]]
 
-    xiong_market_table_2 = HousingMarket(11, xiong_preferences_table_2)
+    xiong_market_table_2 = HousingMarket(xiong_preferences_table_2)
     # xiong_market_table_2.execute_extended_ttc(verbose=True)
 
 
@@ -56,7 +56,7 @@ if __name__ == "__main__":
         [{4},{0,1,2,3,5,6}]
     ]
 
-    nb_housing_market = HousingMarket(7, nb_test_preferences)
+    nb_housing_market = HousingMarket(nb_test_preferences)
     # nb_housing_market.execute_extended_ttc(verbose=True)
 
     # agent 5 only prefers its own object now but has no change in final allocation.
@@ -71,13 +71,13 @@ if __name__ == "__main__":
 
     ]
 
-    nb_5_misreport = HousingMarket(7, nb_misreport_5)
+    nb_5_misreport = HousingMarket(nb_misreport_5)
     # nb_5_misreport.execute_extended_ttc(verbose=True)
 
 
     saban_sp_market: MarketPreferences = [
         [{2,4},{0,1,3}],
-        [{0}, {4}, {1,2,3}],
+        [{0}, {3}, {1,2,4}],
         [{0},{1,2,3,4}],
         [{1,2},{0,3,4}],
         [{3},{0,1,2,4}]
@@ -85,12 +85,27 @@ if __name__ == "__main__":
 
     saban_agent_2_misreport: MarketPreferences = [
         [{2,4},{0,1,3}],
-
         [{3}, {0,1,2,4}],
         [{0},{1,2,3,4}],
         [{1,2},{0,3,4}],
         [{3},{0,1,2,4}]
     ]
 
-    saban_market = HousingMarket(5, saban_sp_market).execute_extended_ttc(verbose=True)
-    saban_misreport_market = HousingMarket(5, saban_agent_2_misreport).execute_extended_ttc(verbose= True)
+    # saban_market = HousingMarket(5, saban_sp_market).execute_extended_ttc(verbose=True)
+    # saban_misreport_market = HousingMarket(5, saban_agent_2_misreport).execute_extended_ttc(verbose= True) 
+
+
+    truthful_preferences: MarketPreferences = [
+        [{0,1,2}],
+        [{0},{1,2}],
+        [{0},{1},{2}]
+    ]
+
+    misreported_preferences: MarketPreferences = [
+        [{2},{0,1}],
+        [{0},{1,2}],
+        [{0},{1},{2}]
+    ]
+    detected_bossiness_truthful_market = HousingMarket(truthful_preferences).execute_extended_ttc(verbose=True)
+    print("============================================\n====================================")
+    detected_bossiness_manipulated_market = HousingMarket(misreported_preferences).execute_extended_ttc(verbose=True)

@@ -6,16 +6,16 @@ from .verbose_prints import *
 
 class HousingMarket():
     # Housing markets initialised with a number of agents, and a Market preferences structure
-    def __init__(self, n_agents, market_preferences: MarketPreferences) -> None:
-        self.num_agents = n_agents
+    def __init__(self, market_preferences: MarketPreferences) -> None:
+        self.num_agents = len(market_preferences)
         self.market_preferences = market_preferences
         
         # initialise a set of agents and object Ids such that agent i owns object i.
-        self.object_by_agent_index:List[int] = [i for i in range(n_agents)]
-        self.agent_by_object_index:List[int] = [i for i in range(n_agents)]
+        self.object_by_agent_index:List[int] = [i for i in range(self.num_agents)]
+        self.agent_by_object_index:List[int] = [i for i in range(self.num_agents)]
 
         # Initially, all objects should be available for the purpose of selecting top available
-        self.available_objects:List[bool] = [True for _ in range(n_agents)]
+        self.available_objects:List[bool] = [True for _ in range(self.num_agents)]
         
         # this is the allocation that gets returned back from execute()
         self.allocation: Allocation = dict()
