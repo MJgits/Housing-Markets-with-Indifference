@@ -92,7 +92,7 @@ def other_agents_changed(
 
 def run_extended_ttc(num_agents,profile: MarketPreferences) -> Dict[int, int]:
     """
-    Small wrapper so the checker is easy to adapt if your constructor differs.
+    Small wrapper so the checker is easy to adapt
     """
     market = ETTC_HousingMarket(market_preferences = deep_copy_profile(profile))
     return market.execute(verbose=False)
@@ -103,7 +103,7 @@ def find_nonbossiness_violations(
     stop_at_first: bool = True,
 ) -> List[dict]:
     """
-    Exhaustively checks your non-bossiness definition across all enumerated profiles.
+    Exhaustively checks non-bossiness definition across all enumerated profiles.
 
     Non-bossiness here means:
       no agent can misreport, keep the same assigned object,
@@ -159,6 +159,8 @@ def find_nonbossiness_violations(
                     return violations
 
     print(f"Checked {checked_profiles} profiles and {checked_deviations} deviations.")
+    print(f"Violation proportion (over deviations): {len(violations) / checked_deviations:.6f}")
+
     return violations
 
 
@@ -185,3 +187,5 @@ if __name__ == "__main__":
         print("Truthful allocation:", v["truthful_allocation"])
         print("Misreport allocation:", v["misreport_allocation"])
         print("Other agents changed:", v["changed_other_agents"])
+
+    
