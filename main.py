@@ -1,7 +1,6 @@
 from WeakHousingMarketAlgorithm import (
     MarketPreferences,
-    HousingMarket
-    
+    ETTC_HousingMarket
 )
 
 
@@ -20,9 +19,8 @@ if __name__ == "__main__":
                                 [{2,3,4,5},     {0,1}],
                                 [{3,4},         {0,1,2,5}],
                                 [{4},           {0,1,2,3,5}]]
-
-
-    xiong_market_fig2 = HousingMarket(xiong_preferences_fig2)
+   
+    xiong_market_fig2 = ETTC_HousingMarket(xiong_preferences_fig2)
     # fig2_allocation = xiong_market_fig2.execute_extended_ttc(verbose=True)
     # print(f"fig 2 allocation return: {fig2_allocation}")
     
@@ -41,7 +39,7 @@ if __name__ == "__main__":
         [{0,1,9},   {    2,3,4,5,6,7,8,  10}],
         [{4,8,10},  {0,1,2,3,  5,6,7,  9   }]]
 
-    xiong_market_table_2 = HousingMarket(xiong_preferences_table_2)
+    xiong_market_table_2 = ETTC_HousingMarket(xiong_preferences_table_2)
     # xiong_market_table_2.execute_extended_ttc(verbose=True)
 
 
@@ -56,7 +54,7 @@ if __name__ == "__main__":
         [{4},{0,1,2,3,5,6}]
     ]
 
-    nb_housing_market = HousingMarket(nb_test_preferences)
+    nb_housing_market = ETTC_HousingMarket(nb_test_preferences)
     # nb_housing_market.execute_extended_ttc(verbose=True)
 
     # agent 5 only prefers its own object now but has no change in final allocation.
@@ -71,7 +69,7 @@ if __name__ == "__main__":
 
     ]
 
-    nb_5_misreport = HousingMarket(nb_misreport_5)
+    nb_5_misreport = ETTC_HousingMarket(nb_misreport_5)
     # nb_5_misreport.execute_extended_ttc(verbose=True)
 
 
@@ -106,6 +104,6 @@ if __name__ == "__main__":
         [{0},{1,2}],
         [{0},{1},{2}]
     ]
-    detected_bossiness_truthful_market = HousingMarket(truthful_preferences).execute_extended_ttc(verbose=True)
+    detected_bossiness_truthful_market = ETTC_HousingMarket(truthful_preferences).execute(verbose=True)
     print("============================================\n====================================")
-    detected_bossiness_manipulated_market = HousingMarket(misreported_preferences).execute_extended_ttc(verbose=True)
+    detected_bossiness_manipulated_market = ETTC_HousingMarket(misreported_preferences).execute(verbose=True)

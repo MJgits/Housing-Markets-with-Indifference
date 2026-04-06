@@ -26,3 +26,6 @@ ENV/
 build/
 dist/
 *.egg-info/
+
+# files I dont like
+axiom_eval.py

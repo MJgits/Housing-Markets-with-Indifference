@@ -1,25 +1,12 @@
 from typing import List, Set 
-from .utils import MarketPreferences, IndifferenceClass, Allocation
-from .verbose_prints import * 
+from ...utils import MarketPreferences, IndifferenceClass, Allocation, HousingMarket
+from .ettc_verbose_prints import * 
 
 
-
-class HousingMarket():
-    # Housing markets initialised with a number of agents, and a Market preferences structure
+class ETTC_HousingMarket(HousingMarket):
+    # Housing markets initialised with Market preferences structure
     def __init__(self, market_preferences: MarketPreferences) -> None:
-        self.num_agents = len(market_preferences)
-        self.market_preferences = market_preferences
-        
-        # initialise a set of agents and object Ids such that agent i owns object i.
-        self.object_by_agent_index:List[int] = [i for i in range(self.num_agents)]
-        self.agent_by_object_index:List[int] = [i for i in range(self.num_agents)]
-
-        # Initially, all objects should be available for the purpose of selecting top available
-        self.available_objects:List[bool] = [True for _ in range(self.num_agents)]
-        
-        # this is the allocation that gets returned back from execute()
-        self.allocation: Allocation = dict()
-
+        super().__init__(market_preferences)
 
     # Performs partitioning as per Xiong 2021
     def __partition(self, remaining_agents: Set[int]) -> None:
@@ -102,7 +89,6 @@ class HousingMarket():
         if self.verbose:
             verbose_print_subsets(self.S_star, self.S_subsets)
             
-
     #  this method takes an agent id and produces an indifference class. I.e. a set of available objects that are preferenced equally and greater than any other available objects
     def __top_available(self, agent: int) -> IndifferenceClass:
 
@@ -120,7 +106,7 @@ class HousingMarket():
         return top_objects
 
     # this method performs the bulk of the allocation, forming the graph and allocating and exchanging objects 
-    def execute_extended_ttc(self, verbose: bool = False) -> Allocation:
+    def execute(self, verbose: bool = False) -> Allocation:
         self.verbose = verbose
         iteration = 1
         remaining_agents = set([i for i in range(self.num_agents)])
@@ -260,7 +246,6 @@ class HousingMarket():
             
         if self.verbose:
             verbose_print_exchanged_objects(self.object_by_agent_index)
-
 
     # method helps to break ties using global priority order
     def __priority_object_from_top_prefs(self, preferred_objects: set[int]) -> int:
