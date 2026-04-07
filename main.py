@@ -1,4 +1,4 @@
-from WeakHousingMarketAlgorithm import (
+from WeakHousingMarketAlgorithms import (
     MarketPreferences,
     ETTC_HousingMarket
 )

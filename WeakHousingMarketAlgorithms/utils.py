@@ -33,7 +33,25 @@ class HousingMarket():
 
         # this is the allocation that gets returned back from execute()
         self.allocation: Allocation = dict()
+    
+    #  this method takes an agent id and produces an indifference class. I.e. a set of available objects that are preferenced equally and greater than any other available objects
+    def _top_available(self, agent: int) -> IndifferenceClass:
 
+        top_objects: IndifferenceClass = set()
+ 
+        for indiff_class in self.market_preferences[agent]:
+            for obj in indiff_class:
+                if self.available_objects[obj]:
+                    top_objects.add(obj)
+
+            # if we have at least one object returned after checking an entire indiff class, we should break
+            if top_objects: 
+                break    
+        
+        return top_objects
+
+
+    
     def _validate_market_preferences(self) -> None:
         expected_objects = set(range(self.num_agents))
 

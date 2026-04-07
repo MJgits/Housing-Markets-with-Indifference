@@ -2,7 +2,7 @@ from itertools import product
 from typing import Any, Dict, Iterable, List, Set, Tuple, Optional
 from copy import deepcopy
 
-from WeakHousingMarketAlgorithm import MarketPreferences, PrefAgent, ETTC_HousingMarket
+from WeakHousingMarketAlgorithms import MarketPreferences, PrefAgent, ETTC_HousingMarket
 # Assume HousingMarket is available and has:
 #   HousingMarket(preferences: MarketPreferences)
 #   .execute_extended_ttc(verbose: bool = False) -> Dict[int, int]

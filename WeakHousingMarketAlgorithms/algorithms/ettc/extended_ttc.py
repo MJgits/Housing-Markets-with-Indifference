@@ -1,6 +1,6 @@
 from typing import List, Set 
 from ...utils import MarketPreferences, IndifferenceClass, Allocation, HousingMarket
-from .ettc_verbose_prints import * 
+from ...verbose_prints import * 
 
 
 class ETTC_HousingMarket(HousingMarket):
@@ -30,7 +30,7 @@ class ETTC_HousingMarket(HousingMarket):
         for agent in remaining_agents:
 
             # satisfied if owned object is in the set of its top available items
-            if self.object_by_agent_index[agent] in self.__top_available(agent):
+            if self.object_by_agent_index[agent] in self._top_available(agent):
                 remaining.add(agent)
             
             # unsatisfied otherwise
@@ -60,7 +60,7 @@ class ETTC_HousingMarket(HousingMarket):
             for agent in remaining:
 
                 # we are checking if any of the agents top available objects exist in the previous ranks owned objects
-                top_pref_in_prev_rank = self.__top_available(agent).intersection(self.objects_in_S_subsets[rank-1])
+                top_pref_in_prev_rank = self._top_available(agent).intersection(self.objects_in_S_subsets[rank-1])
                 
                 # add agent and object to subset and objects in subset
                 if top_pref_in_prev_rank:
@@ -88,22 +88,6 @@ class ETTC_HousingMarket(HousingMarket):
         
         if self.verbose:
             verbose_print_subsets(self.S_star, self.S_subsets)
-            
-    #  this method takes an agent id and produces an indifference class. I.e. a set of available objects that are preferenced equally and greater than any other available objects
-    def __top_available(self, agent: int) -> IndifferenceClass:
-
-        top_objects: IndifferenceClass = set()
- 
-        for indiff_class in self.market_preferences[agent]:
-            for obj in indiff_class:
-                if self.available_objects[obj]:
-                    top_objects.add(obj)
-
-            # if we have at least one object returned after checking an entire indiff class, we should break
-            if top_objects: 
-                break    
-        
-        return top_objects
 
     # this method performs the bulk of the allocation, forming the graph and allocating and exchanging objects 
     def execute(self, verbose: bool = False) -> Allocation:
@@ -157,7 +141,7 @@ class ETTC_HousingMarket(HousingMarket):
                     for subset_k_objects in self.objects_in_S_subsets:
                         
                         # checking if unsatisfied agent has any overlap with objects owned by agents in subset k
-                        preferred_objects = self.__top_available(unsatisfied_agent).intersection(subset_k_objects)
+                        preferred_objects = self._top_available(unsatisfied_agent).intersection(subset_k_objects)
 
                         # assign out edge and break out of subset sk
                         if preferred_objects:
@@ -169,7 +153,7 @@ class ETTC_HousingMarket(HousingMarket):
                 # for each satisfied agent i.e. in subsets[1:], point to the highest priority in objects owned by agents in k-1
                 for k in range(1,len(self.objects_in_S_subsets)):
                     for agent in self.S_subsets[k]:
-                        preferred_objects = self.__top_available(agent).intersection(self.objects_in_S_subsets[k-1])
+                        preferred_objects = self._top_available(agent).intersection(self.objects_in_S_subsets[k-1])
                         
                         # assigning highest priority object to the out edge of the agent
                         out_edges_agent_to_object[agent] = self.__priority_object_from_top_prefs(preferred_objects)
