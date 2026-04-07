@@ -1,12 +1,24 @@
 from typing import List, Set 
 from ...utils import MarketPreferences, IndifferenceClass, Allocation, HousingMarket
-from ...verbose_prints import * 
+from ...verbose_prints import (
+    format_cycle,
+    format_exchanged_objects,
+    format_final_allocation,
+    format_out_edges,
+    format_removing_terminal,
+    format_subsets,
+)
 
 
 class ETTC_HousingMarket(HousingMarket):
     # Housing markets initialised with Market preferences structure
     def __init__(self, market_preferences: MarketPreferences) -> None:
         super().__init__(market_preferences)
+        self.verbose = False
+
+    def _log(self, message: str = "") -> None:
+        if self.verbose:
+            print(message)
 
     # Performs partitioning as per Xiong 2021
     def __partition(self, remaining_agents: Set[int]) -> None:
@@ -86,8 +98,7 @@ class ETTC_HousingMarket(HousingMarket):
             # Reset the remaining agents with any that were not inserted into S
             remaining = next_remaining
         
-        if self.verbose:
-            verbose_print_subsets(self.S_star, self.S_subsets)
+        self._log(format_subsets(self.S_star, self.S_subsets))
 
     # this method performs the bulk of the allocation, forming the graph and allocating and exchanging objects 
     def execute(self, verbose: bool = False) -> Allocation:
@@ -96,19 +107,20 @@ class ETTC_HousingMarket(HousingMarket):
         remaining_agents = set([i for i in range(self.num_agents)])
         
         while remaining_agents:
-            if self.verbose:
-                print(f'Iteration: {iteration}\nRemaining Agents: {remaining_agents}')
-                print()
+            self._log(f'Iteration: {iteration}\nRemaining Agents: {remaining_agents}\n')
             # Here we create the S partitions, S[0] are unsatisfied and S[-1] is S*
             # This resets the subsets every iteration
             self.__partition(remaining_agents)
   
             # These are the terminal sinks I believe
             if self.S_star:
-                if self.verbose:
-                    verbose_print_removing_terminal(remaining_agents, 
-                                                    self.S_star,
-                                                    self.object_by_agent_index)
+                self._log(
+                    format_removing_terminal(
+                        remaining_agents,
+                        self.S_star,
+                        self.object_by_agent_index,
+                    )
+                )
                 
                 # need to remove terminal agents from the market
                 for agent in self.S_star:
@@ -125,10 +137,8 @@ class ETTC_HousingMarket(HousingMarket):
 
             # Need to construct graph according to rule A
             else:
-                if self.verbose:
-                    print('_______S_star is empty_______')
-                    print()
-                    print('    Creating disjoint cycles and exchanging objects:')
+                self._log('_______S_star is empty_______\n')
+                self._log('    Creating disjoint cycles and exchanging objects:')
                     
                 # each index i is an agent and out_edges[i] is the object that agent i points to.
                 # Initialise out edges as -1 such that removed agents arent part of the graph
@@ -158,17 +168,14 @@ class ETTC_HousingMarket(HousingMarket):
                         # assigning highest priority object to the out edge of the agent
                         out_edges_agent_to_object[agent] = self.__priority_object_from_top_prefs(preferred_objects)
 
-
-                if self.verbose:   
-                    verbose_print_out_edges(out_edges_agent_to_object, self.agent_by_object_index)
+                self._log(format_out_edges(out_edges_agent_to_object, self.agent_by_object_index))
                     
                 # This finds cycles and modifies self.objects_by_agent and agent_by_object to reflect exchanged (but not yet allocated) objects
                 self.__identify_cycles_exchange_objects(out_edges_agent_to_object)
             
             iteration+=1
 
-        if self.verbose:
-            verbose_print_final_allocation(self.allocation)
+        self._log(format_final_allocation(self.allocation))
 
         return self.allocation
                 
@@ -204,12 +211,15 @@ class ETTC_HousingMarket(HousingMarket):
                         
                         start_cycle_index = current_path.index(next_agent)
                         
-                        if self.verbose:
-                            cycle_path = current_path[start_cycle_index:][:]
-                            cycle_path.append(next_agent)
-                            verbose_print_cycle(cycle_path, 
-                                                self.object_by_agent_index,
-                                                self.agent_by_object_index)
+                        cycle_path = current_path[start_cycle_index:][:]
+                        cycle_path.append(next_agent)
+                        self._log(
+                            format_cycle(
+                                cycle_path,
+                                self.object_by_agent_index,
+                                self.agent_by_object_index,
+                            )
+                        )
                             
                         
                         
@@ -228,8 +238,7 @@ class ETTC_HousingMarket(HousingMarket):
                         agentIdx = next_agent
                         visited[agentIdx] = True
             
-        if self.verbose:
-            verbose_print_exchanged_objects(self.object_by_agent_index)
+        self._log(format_exchanged_objects(self.object_by_agent_index))
 
     # method helps to break ties using global priority order
     def __priority_object_from_top_prefs(self, preferred_objects: set[int]) -> int:
