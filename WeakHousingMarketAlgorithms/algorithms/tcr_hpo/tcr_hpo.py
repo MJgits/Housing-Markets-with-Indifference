@@ -11,7 +11,6 @@ class TCR_HPO(HousingMarket):
     # a common priority ordering is applied over objects. For this implementation, min object index value is the highest priority
     
     # execution logic
-    # TODO fix function signature to return allocation when this is implemented 
     def execute(self, verbose: bool = False) -> Allocation: 
 
         self.verbose = verbose
@@ -92,6 +91,7 @@ class TCR_HPO(HousingMarket):
 
         # need to repeatedly take the highest priority agent in AL, make them point, then label, then add new adjacencies
         while adjacent_to_labelled:
+            unlabelled_agents = remaining_agents.difference(labelled_agents)
             objects_in_al = {self.object_by_agent_index[agent] for agent in adjacent_to_labelled}
             
             # need to make agent point to their HPA in L

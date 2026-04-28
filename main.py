@@ -1,7 +1,7 @@
 from WeakHousingMarketAlgorithms import (
     MarketPreferences,
     ETTC_HousingMarket,
-    PlaxtonAlgo1
+    TCR_HPO
 )
 
 
@@ -41,7 +41,7 @@ if __name__ == "__main__":
         [{4,8,10},  {0,1,2,3,  5,6,7,  9   }]]
 
     xiong_market_table_2 = ETTC_HousingMarket(xiong_preferences_table_2)
-    # xiong_market_table_2.execute_extended_ttc(verbose=True)
+    ettc_xiong_outcome = xiong_market_table_2.execute()
 
 
     # Agent 5 loses its object and then receives it back. Allocation is unchanged even when we force agent 5 to only prefer object 5
@@ -109,15 +109,15 @@ if __name__ == "__main__":
     print("============================================\n====================================")
     detected_bossiness_manipulated_market = ETTC_HousingMarket(misreported_preferences).execute(verbose=True)
 
-    print("plaxton test\n\n\n\n\n\n")
+    print("TCRTESTING\n\n\n\n\n\n")
 
-    plaxton_test_on_saban = PlaxtonAlgo1(saban_sp_market).execute()
-    plaxton_test_saban_misreport = PlaxtonAlgo1(saban_agent_2_misreport).execute()
-    
-    if plaxton_test_on_saban == plaxton_test_saban_misreport:
-        print("saban strategy proof")
+    tcr_hpo_tests = TCR_HPO(xiong_preferences_table_2)
+    tcr_alloc = tcr_hpo_tests.execute()
+    print(tcr_alloc)
+    if tcr_alloc == ettc_xiong_outcome:
+        print("same alloc")
 
 
 
-    print(plaxton_test_on_saban)
-    print(plaxton_test_saban_misreport)
+
+   

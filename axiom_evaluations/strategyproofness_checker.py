@@ -6,7 +6,7 @@ if __package__ in (None, ""):
     ensure_project_root_on_path()
 
 from WeakHousingMarketAlgorithms import PrefAgent
-from axiom_evaluations.allocation_rules import AllocationRule, run_extended_ttc, run_plaxton_algo_1
+from axiom_evaluations.allocation_rules import AllocationRule, run_extended_ttc, run_tcr_hpo
 from axiom_evaluations.preference_enumerator import (
     canonical_pref,
     deep_copy_profile,
@@ -36,7 +36,7 @@ def strictly_prefers(pref: PrefAgent, better_obj: int, worse_obj: int) -> bool:
 def find_strategyproofness_violations(
     n_agents: int,
     stop_at_first: bool = True,
-    allocation_rule: AllocationRule = run_plaxton_algo_1,
+    allocation_rule: AllocationRule = run_extended_ttc,
 ) -> List[dict]:
     """
     Exhaustively checks strategy-proofness across all enumerated profiles.
@@ -127,7 +127,9 @@ def is_strategyproof_exhaustive(
 if __name__ == "__main__":
     n_agents = 3
 
-    violations = find_strategyproofness_violations(n_agents=n_agents, stop_at_first=False, allocation_rule= run_plaxton_algo_1)
+    violations = find_strategyproofness_violations(n_agents=n_agents, 
+                                                   stop_at_first=False, 
+                                                   allocation_rule= run_tcr_hpo)
 
     if not violations:
         print(f"No strategy-proofness violations found for n_agents={n_agents}.")

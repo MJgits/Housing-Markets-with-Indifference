@@ -8,7 +8,7 @@ if __package__ in (None, ""):
     ensure_project_root_on_path()
 
 from WeakHousingMarketAlgorithms import Allocation
-from axiom_evaluations.allocation_rules import AllocationRule, run_extended_ttc, run_plaxton_algo_1
+from axiom_evaluations.allocation_rules import AllocationRule, run_extended_ttc, run_tcr_hpo
 from axiom_evaluations.preference_enumerator import (
     canonical_pref,
     deep_copy_profile,
@@ -213,14 +213,14 @@ if __name__ == "__main__":
     violations = find_nonbossiness_violations(
         n_agents=n_agents,
         stop_at_first=False,
-        allocation_rule=run_extended_ttc,
+        allocation_rule=run_tcr_hpo,
     )
 
     if not violations:
         print(f"No non-bossiness violations found for n_agents={n_agents}.")
     else:
         output_path = Path(__file__).with_name(
-            f"nonbossiness_violations_n{n_agents}.csv"
+            f"nonbossiness_violations_n{n_agents}_tcr_hpo.csv"
         )
         export_violations_to_csv(violations, output_path=output_path, n_agents=n_agents)
 

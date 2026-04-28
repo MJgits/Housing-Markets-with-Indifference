@@ -5,7 +5,7 @@ if __package__ in (None, ""):
 
     ensure_project_root_on_path()
 
-from WeakHousingMarketAlgorithms import Allocation, ETTC_HousingMarket, MarketPreferences, PlaxtonAlgo1
+from WeakHousingMarketAlgorithms import Allocation, ETTC_HousingMarket, MarketPreferences,TCR_HPO
 from axiom_evaluations.preference_enumerator import deep_copy_profile
 
 
@@ -20,9 +20,19 @@ def run_extended_ttc(profile: MarketPreferences) -> Allocation:
     return market.execute(verbose=False)
 
 
-def run_plaxton_algo_1(profile: MarketPreferences) -> Allocation:
+# def run_plaxton_algo_1(profile: MarketPreferences) -> Allocation:
+#     """
+#     Run Plaxton algorithm 1 on a fresh copy of the preference profile.
+#     """
+#     market = PlaxtonAlgo1(market_preferences=deep_copy_profile(profile))
+#     return market.execute(verbose=False)
+
+
+
+def run_tcr_hpo(profile: MarketPreferences) -> Allocation:
     """
     Run Plaxton algorithm 1 on a fresh copy of the preference profile.
     """
-    market = PlaxtonAlgo1(market_preferences=deep_copy_profile(profile))
+    market = TCR_HPO(market_preferences=deep_copy_profile(profile))
     return market.execute(verbose=False)
+
