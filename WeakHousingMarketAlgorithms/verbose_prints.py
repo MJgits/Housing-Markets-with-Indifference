@@ -1,5 +1,4 @@
-from typing import List, Set
-from .utils import Allocation
+from typing import Dict, List, Set
 
 
 def format_subsets(S_star, S_subsets) -> str:
@@ -48,8 +47,7 @@ def format_out_edges(out_edges: List,
 
 
 def format_cycle(cycle_agents: List,
-                 objects_by_agent_idx: List,
-                 agent_by_object_id: List) -> str:
+                 objects_by_agent_idx: List) -> str:
     parts = [f'Agent {cycle_agents[0]}']
     for agent in cycle_agents[1:]:
         parts.append(f'==> Object {objects_by_agent_idx[agent]} ==> Agent {agent}')
@@ -71,7 +69,13 @@ def format_exchanged_objects(object_by_agent_id: List) -> str:
     return "\n".join(lines)
 
 
-def format_final_allocation(allocation: Allocation) -> str:
+
+def format_terminal_sinks(S_star: Set) -> str:
+    return f"Agents {S_star} are terminal sinks."
+
+
+
+def format_final_allocation(allocation: Dict[int, int]) -> str:
     lines = [
         '_______Final Allocation_______',
         '______________________________',

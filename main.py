@@ -1,6 +1,7 @@
 from WeakHousingMarketAlgorithms import (
     MarketPreferences,
-    ETTC_HousingMarket
+    ETTC_HousingMarket,
+    PlaxtonAlgo1
 )
 
 
@@ -89,8 +90,8 @@ if __name__ == "__main__":
         [{3},{0,1,2,4}]
     ]
 
-    # saban_market = HousingMarket(5, saban_sp_market).execute_extended_ttc(verbose=True)
-    # saban_misreport_market = HousingMarket(5, saban_agent_2_misreport).execute_extended_ttc(verbose= True) 
+    saban_market = ETTC_HousingMarket(saban_sp_market).execute(verbose=True)
+    saban_misreport_market = ETTC_HousingMarket(saban_agent_2_misreport).execute(verbose= True) 
 
 
     truthful_preferences: MarketPreferences = [
@@ -107,3 +108,16 @@ if __name__ == "__main__":
     detected_bossiness_truthful_market = ETTC_HousingMarket(truthful_preferences).execute(verbose=True)
     print("============================================\n====================================")
     detected_bossiness_manipulated_market = ETTC_HousingMarket(misreported_preferences).execute(verbose=True)
+
+    print("plaxton test\n\n\n\n\n\n")
+
+    plaxton_test_on_saban = PlaxtonAlgo1(saban_sp_market).execute()
+    plaxton_test_saban_misreport = PlaxtonAlgo1(saban_agent_2_misreport).execute()
+    
+    if plaxton_test_on_saban == plaxton_test_saban_misreport:
+        print("saban strategy proof")
+
+
+
+    print(plaxton_test_on_saban)
+    print(plaxton_test_saban_misreport)
