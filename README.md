@@ -20,7 +20,7 @@ your_market_preferences = [
 [{1},{0,2}]
 ]
 
-your_market = HousingMarket(n_agents = 3, market_preferences = your_market_preferences)
+your_market = HousingMarket(market_preferences = your_market_preferences)
 
 
 Finally the extended TTC algorithm is executed upon running the execute method:
